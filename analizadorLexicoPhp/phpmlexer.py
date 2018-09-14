@@ -71,3 +71,15 @@ tokens=(
 'TRAIT',
 'WHILE',
 )
+
+
+
+def t_BREAK(t):
+    r'break'
+    return t
+def t_VAR(t):
+    r'var'
+    return t
+def t_PRIVATE(t):
+    r'private'
+    return t
