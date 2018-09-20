@@ -1,8 +1,9 @@
 import ply.lex as lex
+import sys
 
 #list of tokens
 tokens=(
-#reserved words
+  #reserved words - Palabras reservadas
 '__HALT_COMPILER',#()
 'BREAK',
 'CLONE',
@@ -70,8 +71,64 @@ tokens=(
 'REQUIRE_ONCE',
 'TRAIT',
 'WHILE',
-)
 
+#Symbols - simbolos
+#Aritmeticos
+'SUMA',
+'RESTA',
+'MULTIPLICACION',
+'DIVISION',
+'ASIGNACION',
+#Incremento/Decremento
+'INCREMENTO',
+'DECREMENTO',
+#Comparacion
+'MENOR',
+'MAYOR',
+'MENORIGUAL',
+'MAYORIGUAL',
+'DIFERENTE',
+'IGUAL',
+'IGUALTIPODATO',
+'DIFERENTETIPODATO',
+'DISTINTO',
+'SEMICOLON',
+'COMMA',
+'LPAREN',
+'RPAREN',
+'LBRACKET',
+'RBRACKET',
+'LBLOCK',
+'RBLOCK',
+'COLON',
+'AMPERSANT',
+'HASHTAG',
+'DOT',
+#OTROS
+'ID',
+'STRING',
+'INTEGER'
+)
+#Reglas de expresiones regulares para simbolos simples
+t_SUMA = r'\+'
+t_RESTA = r'-'
+t_MULTIPLICACION = r'\*'
+t_DIVISION = r'/'
+t_ASIGNACION = r'='
+t_MENOR = r'<'
+t_MAYOR = r'>'  
+t_SEMICOLON = ';'
+t_COMMA  = r','
+t_LPAREN = r'\('
+t_RPAREN  = r'\)'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
+t_LBLOCK   = r'{'
+t_RBLOCK   = r'}'
+t_COLON   = r':'
+t_AMPERSANT = r'\&'
+t_HASHTAG = r'\#'
+t_DOT = r'\.'
 
 
 def t_BREAK(t):
@@ -83,3 +140,132 @@ def t_VAR(t):
 def t_PRIVATE(t):
     r'private'
     return t
+def t_PUBLIC(t):
+    r'public'
+    return t
+
+def t_CLASS(t):
+    r'class'
+    return t
+
+def t_FUNCTION(t):
+    r'function'
+    return t
+def t_ECHO(t):
+    r'echo'
+    return t
+def t_TRUE(t):
+    r'TRUE|true|True'
+    return t
+
+def t_FALSE(t):
+    r'FALSE|False|false'
+    return t
+
+def t_IF(t):
+    r'if'
+    return t
+
+def t_ELSE(t):
+    r'else'
+    return t
+
+'''
+def t_ELSEIF(t):
+    r'elseif'
+    return t'''
+#operadoreslogicos
+def t_AND(t):
+    r'and|&&'
+    return t
+
+def t_OR(t):
+    r'or|\|\|'
+    return t
+
+
+def t_NOT(t):
+    r'!'
+    return t
+
+def t_XOR(t):
+    r'xor'
+    return t
+#estructuras de control
+def t_WHILE(t):
+    r'while'
+    return t
+
+def t_DO(t):
+    r'do'
+    return t
+
+def t_FOR(t):
+    r'for'
+    return t
+
+def t_comments(t):
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
+
+
+def t_comments_C99(t):
+    r'//(.)*?\n'
+    t.lexer.lineno += 1
+def t_INCLUDE(t):
+    r'include'
+    return t
+
+def t_RETURN(t):
+    r'return'
+    return t
+
+    
+def t_ID(t):
+    r'\$(_)?[0-9]*[a-zA-Z][a-zA-Z_0-9]*|\$(_)?[0-9]*'
+    return t
+
+def t_INTEGER(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+def t_STRING(t):
+    r'\"[a-zA-Z_0-9\&\.\-\_\+\*\$\%\@\!\xc2\xa1\/\\\#\?\xc2\xbf\(\)\|\=\{\}\[\]\>\<\,\: \t]*\"'
+    t.value = str(t.value)
+    return t
+
+def t_STRINGG(t):
+    r'\'[a-zA-Z_0-9\&\.\-\_\+\*\$\%\@\!\xc2\xa1\/\\\#\?\xc2\xbf\(\)\|\=\{\}\[\]\>\<\,\: \t]*\''
+    t.value = str(t.value)
+    return t
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+def t_error(t):
+    print ("Lexical error: " + str(t.value[0]))
+    t.lexer.skip(1)
+
+def test(data, lexer):
+	lexer.input(data)
+	while True:
+		tok = lexer.token()
+		if not tok:
+			break
+		print (tok)
+
+lexer = lex.lex()
+
+if __name__ == '__main__':
+	if (len(sys.argv) > 1):
+		fin = sys.argv[1]
+	else:
+		fin = 'prueba\prueba.php'
+	f = open(fin, 'r')
+	data = f.read()
+	print (data)
+	lexer.input(data)
+	test(data, lexer)
+	#input()
