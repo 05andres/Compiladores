@@ -58,7 +58,6 @@ tokens=(
 'REQUIRE',
 'THROW',
 'VAR',
-'AS',
 'CLASS',
 'DEFAULT',
 'ELSEIF',
@@ -79,6 +78,9 @@ tokens=(
 'MULTIPLICACION',
 'DIVISION',
 'ASIGNACION',
+'IDENTIDAD',
+'NOIDENTIDAD',
+'DESIGUALDAD',
 #Incremento/Decremento
 'INCREMENTO',
 'DECREMENTO',
@@ -89,6 +91,7 @@ tokens=(
 'MAYORIGUAL',
 'DIFERENTE',
 'IGUAL',
+'INTERROGACION',
 'IGUALTIPODATO',
 'DIFERENTETIPODATO',
 'DISTINTO',
@@ -101,18 +104,29 @@ tokens=(
 'LBLOCK',
 'RBLOCK',
 'COLON',
-'AMPERSANT',
+'REFERENCIA',
 'HASHTAG',
 'DOT',
 #OTROS
 'ID',
 'STRING',
-'INTEGER'
+'INTEGER',
+'CADENA',
+'CADENAA',
+'CADENAAA',
+'CONSTRUCTOR',
+'NFUNCTION',
+'HEXADECIMAL',
+'OCTAL',
+'OPAS',
+
+
 )
 #Reglas de expresiones regulares para simbolos simples
 t_SUMA = r'\+'
 t_RESTA = r'-'
 t_MULTIPLICACION = r'\*'
+t_INTERROGACION= r'\?'
 t_DIVISION = r'/'
 t_ASIGNACION = r'='
 t_MENOR = r'<'
@@ -126,16 +140,48 @@ t_RBRACKET = r'\]'
 t_LBLOCK   = r'{'
 t_RBLOCK   = r'}'
 t_COLON   = r':'
-t_AMPERSANT = r'\&'
+t_REFERENCIA = r'\&'
 t_HASHTAG = r'\#'
 t_DOT = r'\.'
+t_ignore = ' \t'
+#OPERADORES Comparacion
+t_IDENTIDAD = r'==='
+t_IGUAL = r'=='
+t_NOIDENTIDAD= r'!=='
+t_MAYORIGUAL = r'>='
+t_MENORIGUAL = r'<='
+t_DESIGUALDAD='<>'
+t_INCREMENTO = '\++'
+t_DECREMENTO = '\--'
 
+def t_OPAS(t):
+    r'as'
+    return t
+def t_NEW(t):
+    r'new'
+    return t
+
+def t_HEXADECIMAL(t):
+	r'(0x|0X)[a-fA-F0-9]+'
+	return t
+def t_OCTAL(t):
+	r'0\d+'
+	return t
 
 def t_BREAK(t):
     r'break'
     return t
+
+def t_CONSTRUCTOR(t):
+    r'__construct'
+    return t
+
 def t_VAR(t):
     r'var'
+    return t
+
+def t_ARRAY(t):
+    r'array'
     return t
 def t_PRIVATE(t):
     r'private'
@@ -143,7 +189,16 @@ def t_PRIVATE(t):
 def t_PUBLIC(t):
     r'public'
     return t
+def t_FOREACH(t):
+    r'foreach'
+    return t
 
+def t_CADENA(t):
+	r'\"[a-zA-Z_0-9\&\.\-\_\+\*\$\%\@\!\xc2\xa1\/\\\#\?\xc2\xbf\(\)\|\=\{\}\[\]\>\<\,\: \t]*\"' 
+	return t
+def t_CADENAA(t):
+	r'\'[a-zA-Z_0-9\&\.\-\_\+\*\$\%\@\!\xc2\xa1\/\\\#\?\xc2\xbf\(\)\|\=\{\}\[\]\>\<\,\: \t]*\'' 
+	return t
 def t_CLASS(t):
     r'class'
     return t
@@ -183,7 +238,6 @@ def t_OR(t):
     r'or|\|\|'
     return t
 
-
 def t_NOT(t):
     r'!'
     return t
@@ -207,8 +261,7 @@ def t_FOR(t):
 def t_comments(t):
     r'/\*(.|\n)*?\*/'
     t.lexer.lineno += t.value.count('\n')
-
-
+    
 def t_comments_C99(t):
     r'//(.)*?\n'
     t.lexer.lineno += 1
@@ -224,6 +277,9 @@ def t_RETURN(t):
 def t_ID(t):
     r'\$(_)?[0-9]*[a-zA-Z][a-zA-Z_0-9]*|\$(_)?[0-9]*'
     return t
+def t_NFUNCTION(t):
+	r'[a-zA-Z][a-zA-Z_a-zA-Z]*'
+	return t
 
 def t_INTEGER(t):
     r'\d+'
