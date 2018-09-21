@@ -1,4 +1,5 @@
 class Student{
+    self
     public $nombre; //Se puede accesar desde el Objeto
     public $notas = array(); //Se puede Accesar desde el Objeto
     private $promedio; //solo es usado dentro de la clase y no es heredable (protected si es heredable)
@@ -21,6 +22,7 @@ class Student{
     public function imprimir_notas() //imprime las notas en pantalla
     {
         $i=0;
+        self
         foreach ($this->notas as $nota)
         {
             $i++;

@@ -5,6 +5,7 @@ import sys
 tokens=(
   #reserved words - Palabras reservadas
 '__HALT_COMPILER',#()
+'REFERENCIAOBJEC',
 'BREAK',
 'CLONE',
 'DIE',#()
@@ -117,10 +118,11 @@ tokens=(
 'CONSTRUCTOR',
 'NFUNCTION',
 'HEXADECIMAL',
+'BINARIO',
 'OCTAL',
 'OPAS',
-
-
+'REFERENCIACLASS',
+'NOMBRECLASS'
 )
 #Reglas de expresiones regulares para simbolos simples
 t_SUMA = r'\+'
@@ -160,13 +162,26 @@ def t_OPAS(t):
 def t_NEW(t):
     r'new'
     return t
+def t_REFERENCIAOBJEC(t):
+    r'$this'
+    return t
+'''def t_NOMBRECLASS(t):
+    r'c[ \t][a-zA-Z_a-zA-Z]*'
+    return t
+    '''
+def t_REFERENCIACLASS(t):
+    r'self'
+    return t
 
 def t_HEXADECIMAL(t):
-	r'(0x|0X)[a-fA-F0-9]+'
+	r'0[xX][a-fA-F0-9]+'
 	return t
 def t_OCTAL(t):
-	r'0\d+'
+	r'0[0-7]+'
 	return t
+def t_BINARIO(t):
+    r'0[b][01]+'
+    return t
 
 def t_BREAK(t):
     r'break'
