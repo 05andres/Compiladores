@@ -122,7 +122,11 @@ tokens=(
 'OCTAL',
 'OPAS',
 'REFERENCIACLASS',
-'NOMBRECLASS'
+'NOMBRECLASS',
+'APUNTVAR',
+'PUSH',
+'FINPHP',
+'INIPHP'
 )
 #Reglas de expresiones regulares para simbolos simples
 t_SUMA = r'\+'
@@ -156,9 +160,19 @@ t_DESIGUALDAD='<>'
 t_INCREMENTO = '\++'
 t_DECREMENTO = '\--'
 
+
+def t_FINPHP(t):
+    r'\?[>]'
+    return t
+
 def t_OPAS(t):
     r'as'
     return t
+
+def t_INIPHP(t):
+    r'<[?]php'
+    return t
+    
 def t_NEW(t):
     r'new'
     return t
@@ -206,6 +220,9 @@ def t_PUBLIC(t):
     return t
 def t_FOREACH(t):
     r'foreach'
+    return t
+def t_APUNTVAR(t):
+    r'->'
     return t
 
 def t_CADENA(t):
@@ -314,6 +331,10 @@ def t_STRINGG(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+def t_PUSH(t):
+    r'push'
+    return t
+
 
 def t_error(t):
     print ("Lexical error: " + str(t.value[0]))

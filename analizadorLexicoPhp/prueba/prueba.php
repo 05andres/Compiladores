@@ -1,7 +1,9 @@
+<?php
 class Student{
     self
     $a=0b1111010
     $b=0x1A
+    
     public $nombre; //Se puede accesar desde el Objeto
     public $notas = array(); //Se puede Accesar desde el Objeto
     private $promedio; //solo es usado dentro de la clase y no es heredable (protected si es heredable)

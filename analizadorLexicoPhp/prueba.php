@@ -1,3 +1,4 @@
+<?php
 class Student{
     self
     public $nombre; //Se puede accesar desde el Objeto
