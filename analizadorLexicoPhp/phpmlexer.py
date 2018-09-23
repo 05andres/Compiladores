@@ -172,12 +172,12 @@ def t_OPAS(t):
 def t_INIPHP(t):
     r'<[?]php'
     return t
-    
+
 def t_NEW(t):
     r'new'
     return t
 def t_REFERENCIAOBJEC(t):
-    r'$this'
+    r'[$]this'
     return t
 '''def t_NOMBRECLASS(t):
     r'c[ \t][a-zA-Z_a-zA-Z]*'
